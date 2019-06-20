@@ -52,7 +52,7 @@ bool CMasternodeSync::IsBlockchainSynced()
 
     if (!pindex) return false;
 
-    if (pindex->nTime + 12 * 60 * 60 < GetTime())
+    if (pindex->nTime + 24 * 60 * 60 < GetTime())
         return false;
 
     fBlockchainSynced = true;
@@ -179,7 +179,7 @@ std::string CMasternodeSync::GetSyncStatus()
         case MASTERNODE_SYNC_FINISHED:
             return _("Synchronization finished");
         case MASTERNODE_SYNC_GM:
-            return _("Synchronizing GM data...");
+            return _("Synchronizing FTXO data...");
     }
     return "";
 }

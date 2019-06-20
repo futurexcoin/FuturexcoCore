@@ -206,10 +206,10 @@ QT_TRANSLATE_NOOP("futurexco-core", ""
 QT_TRANSLATE_NOOP("futurexco-core", ""
 "You must specify a masternodeprivkey in the configuration. Please see "
 "documentation for help."),
-QT_TRANSLATE_NOOP("futurexco-core", "(32322 could be used only on mainnet)"),
+QT_TRANSLATE_NOOP("futurexco-core", "(11222 could be used only on mainnet)"),
 QT_TRANSLATE_NOOP("futurexco-core", "(default: %s)"),
 QT_TRANSLATE_NOOP("futurexco-core", "(default: 1)"),
-QT_TRANSLATE_NOOP("futurexco-core", "(must be 32322 for mainnet)"),
+QT_TRANSLATE_NOOP("futurexco-core", "(must be 11222 for mainnet)"),
 QT_TRANSLATE_NOOP("futurexco-core", "<category> can be:"),
 QT_TRANSLATE_NOOP("futurexco-core", "Accept command line and JSON-RPC commands"),
 QT_TRANSLATE_NOOP("futurexco-core", "Accept connections from outside (default: 1 if no -proxy or -connect)"),

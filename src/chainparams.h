@@ -84,7 +84,8 @@ public:
     int64_t TargetSpacingSlowLaunch() const { return nTargetSpacingSlowLaunch; }
     /** Instamine Prevention, Zero reward to block **/
     // int ANTI_INSTAMINE_TIME() const { return nAntiInstamineTime; }
-    int COINBASE_MATURITY() const { return nMaturity; }
+    // int COINBASE_MATURITY() const { return nMaturity; }
+
     CAmount MaxMoneyOut() const { return nMaxMoneyOut; }
     /** The masternode count that we will allow the see-saw reward payments to be off by */
     int MasternodeCountDrift() const { return nMasternodeCountDrift; }
@@ -134,7 +135,7 @@ protected:
     int nLastPOWBlock;
     int nStartMasternodePaymentsBlock;
     int nMasternodeCountDrift;
-    int nMaturity;
+    // int nMaturity;
     int nModifierUpdateBlock;
     CAmount nMaxMoneyOut;
     int nMinerThreads;

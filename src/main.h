@@ -126,6 +126,8 @@ struct BlockHasher {
     size_t operator()(const uint256& hash) const { return hash.GetLow64(); }
 };
 
+
+
 extern CScript COINBASE_FLAGS;
 extern CCriticalSection cs_main;
 extern CTxMemPool mempool;
@@ -264,6 +266,32 @@ int GetInputAge(CTxIn& vin);
 int GetInputAgeIX(uint256 nTXHash, CTxIn& vin);
 bool GetCoinAge(const CTransaction& tx, unsigned int nTxTime, uint64_t& nCoinAge);
 int GetIXConfirmations(uint256 nTXHash);
+
+inline int Dynamic_coinbase_maturity(int height) {
+  if (height <= Params().LAST_POW_BLOCK()) {
+    return 128;
+  } else if (height <= 30000 && height > Params().LAST_POW_BLOCK()) {
+    return 1024;
+  } else if (height <= 70000 && height > 30000) {
+    return 512;
+  } else if (height <= 120000 && height > 70000) {
+    return 256;
+  } else if (height <= 200000 && height > 120000) {
+    return 128;
+  } else if (height <= 300000 && height > 200000) {
+    return 128;
+  } else if (height <= 450000 && height > 300000) {
+    return 128;
+  } else if (height <= 750000 && height > 450000) {
+    return 128;
+  } else if (height <= 1250000 && height > 750000) {
+    return 128;
+  } else if (height > 1250000) {
+    return 128;
+  }
+
+  return 128;
+}
 
 struct CNodeStateStats {
     int nMisbehavior;

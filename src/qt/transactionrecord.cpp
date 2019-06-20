@@ -42,7 +42,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
     std::map<std::string, std::string> mapValue = wtx.mapValue;
 
     if (wtx.IsCoinStake()) {
-        TransactionRecord sub(hash, nTime);
+        // TransactionRecord sub(hash, nTime);
         CTxDestination address;
         if (!ExtractDestination(wtx.vout[1].scriptPubKey, address))
             return parts;
@@ -50,6 +50,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
         if (!IsMine(*wallet, address)) {
             //if the address is not yours then it means you have a tx sent to you in someone elses coinstake tx
             for (unsigned int i = 1; i < wtx.vout.size(); i++) {
+              TransactionRecord sub(hash, nTime);
                 CTxDestination outAddress;
                 if (ExtractDestination(wtx.vout[i].scriptPubKey, outAddress)) {
                     if (IsMine(*wallet, outAddress)) {
@@ -58,18 +59,51 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
                         sub.type = TransactionRecord::MNReward;
                         sub.address = CBitcoinAddress(outAddress).ToString();
                         sub.credit = wtx.vout[i].nValue;
+                        parts.append(sub);
                     }
                 }
             }
         } else {
+            TransactionRecord sub(hash, nTime);
             //stake reward
+            CAmount totalmnpaid = 0;
+            // catching the first stake addresses
+            string stakeAddr = CBitcoinAddress(address).ToString();
+
+            for (unsigned int i = 2; i < wtx.vout.size(); i++) {
+                TransactionRecord sub(hash, nTime);
+                CTxDestination outAddress;
+                if (ExtractDestination(wtx.vout[i].scriptPubKey, outAddress)) {
+                  if (CBitcoinAddress(outAddress).ToString() == stakeAddr) {
+                    // we do nothing here:
+                    /* then it is the splited stake again */
+                    // isminetype mine = wallet->IsMine(wtx.vout[i]);
+                    // sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+                    // sub.type = TransactionRecord::StakeMint;
+                    // sub.address = CBitcoinAddress(address).ToString();
+                    // sub.credit = wtx.vout[i].nValue; //nNet;
+                    // parts.append(sub);
+                    // if not it let's check if it is one of our masternode.
+                  } else if (IsMine(*wallet, outAddress)) {
+                        isminetype mine = wallet->IsMine(wtx.vout[i]);
+                        sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+                        sub.type = TransactionRecord::MNReward;
+                        sub.address = CBitcoinAddress(outAddress).ToString();
+                        sub.credit = wtx.vout[i].nValue;
+                        totalmnpaid += wtx.vout[i].nValue;
+                        parts.append(sub);
+                    }
+                }
+            }
+
             isminetype mine = wallet->IsMine(wtx.vout[1]);
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
             sub.type = TransactionRecord::StakeMint;
             sub.address = CBitcoinAddress(address).ToString();
-            sub.credit = nNet;
+            sub.credit = nNet - totalmnpaid; //wtx.vout[1].nValue; //nNet;
+            parts.append(sub);
         }
-        parts.append(sub);
+        // parts.append(sub);
     } else if (nNet > 0 || wtx.IsCoinBase()) {
         //
         // Credit

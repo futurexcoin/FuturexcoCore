@@ -74,22 +74,18 @@ public:
         bool confirmed = index.data(TransactionTableModel::ConfirmedRole).toBool();
         QVariant value = index.data(Qt::ForegroundRole);
         QColor foreground = COLOR_BLACK;
-        (theme.operator==("dark")) ? foreground = QColor(209, 180, 117) : foreground = COLOR_BLACK;
-        if (value.canConvert<QBrush>()) {
-            QBrush brush = qvariant_cast<QBrush>(value);
-            foreground = brush.color();
-        }
+
 
         painter->setPen(foreground);
         QRect boundingRect;
         painter->drawText(addressRect, Qt::AlignLeft | Qt::AlignVCenter, address, &boundingRect);
 
         if (amount < 0) {
-            (theme.operator==("dark")) ? foreground = QColor(220, 50, 50) : foreground = COLOR_NEGATIVE;
+            foreground = COLOR_NEGATIVE;
         } else if (!confirmed) {
-            (theme.operator==("dark")) ? foreground = QColor(98, 56, 32) : foreground = COLOR_UNCONFIRMED;
+            foreground = COLOR_UNCONFIRMED;
         } else {
-            (theme.operator==("dark")) ? foreground = QColor(209, 180, 117) : foreground = COLOR_BLACK;
+            foreground = COLOR_BLACK;
         }
         painter->setPen(foreground);
         QString amountText = BitcoinUnits::formatWithUnit(unit, amount, true, BitcoinUnits::separatorAlways);
@@ -98,7 +94,7 @@ public:
         }
         painter->drawText(amountRect, Qt::AlignRight | Qt::AlignVCenter, amountText);
 
-        (theme.operator==("dark")) ? painter->setPen( QColor(209, 180, 117) ) : painter->setPen(COLOR_BLACK);
+        painter->setPen(COLOR_BLACK);
         painter->drawText(amountRect, Qt::AlignLeft | Qt::AlignVCenter, GUIUtil::dateTimeStr(date));
 
         painter->restore();
@@ -328,13 +324,13 @@ double roi1, roi2, roi3;
 
 int64_t getViewCollateral(int blockHeight, int mn_level)
 {
-  if (blockHeight >= 0 && blockHeight < 8000) {
+  if (blockHeight >= 0 && blockHeight < Params().LAST_POW_BLOCK()) {
     switch(mn_level) {
         case 0: return 250;
         case 1: return 500;
         case 2: return 1000;
     }
-  } else if (blockHeight >= 8000 && blockHeight < 30000) {
+  } else if (blockHeight >= Params().LAST_POW_BLOCK() && blockHeight < 30000) {
     switch(mn_level) {
         case 0: return 500;
         case 1: return 1000;
@@ -344,7 +340,7 @@ int64_t getViewCollateral(int blockHeight, int mn_level)
     switch(mn_level) {
         case 0: return 1000;
         case 1: return 2000;
-        case 2: return 400;
+        case 2: return 4000;
     }
   } else if (blockHeight >= 70000 && blockHeight < 120000) {
     switch(mn_level) {
@@ -352,13 +348,13 @@ int64_t getViewCollateral(int blockHeight, int mn_level)
         case 1: return 4000;
         case 2: return 6000;
     }
-  } else if (blockHeight >= 120000 && blockHeight < 200000) {
+} else if (blockHeight >= 120000 && blockHeight < 200000) {
     switch(mn_level) {
         case 0: return 100000;
         case 1: return 6000;
         case 2: return 10000;
     }
-  } else if (blockHeight >= 200000 && blockHeight < 300000) {
+} else if (blockHeight >= 200000 && blockHeight < 300000) {
     switch(mn_level) {
         case 0: return 0; //turned off
         case 1: return 100000;
@@ -406,7 +402,7 @@ float GetViewMnPercent(int nHeight, unsigned mnlevel)
             case 1: return 0.25;
             case 2: return 0.55;
         }
-    } else if (nHeight >= 200000) {
+  } else if (nHeight >= 200000) {
         switch(mnlevel) {
             case 0: return 0.0; // turned off
             case 1: return 0.10;
@@ -491,20 +487,30 @@ void OverviewPage::updateMasternodeInfo()
 
   // update collateral info
   if (CurrentBlock >= 0) {
-    if (CurrentBlock >= 200000) {
+    if (CurrentBlock < 70000) {
       ui->label->setText("Min: ");
-      ui->label_lcolat->setText( " OFF" );
-      ui->label_2->setText("Foundation: ");
+      ui->label_lcolat->setText( QString::number(getViewCollateral(CurrentBlock, 0)).append(" FTXO") );
+      ui->label_mn1_percent->setText( QString::number(GetViewMnPercent(CurrentBlock, 0) * 100).append(" %") );
+      ui->label_2->setText("Med: ");
+      ui->label_3->setText("Max: ");
+    } else if (CurrentBlock >= 70000 && CurrentBlock < 200000) {
+      ui->label->setText("Foundation: ");
+      ui->label_lcolat->setText( QString::number(getViewCollateral(CurrentBlock, 0)).append(" FTXO") );
+      ui->label_mn1_percent->setText( QString::number(GetViewMnPercent(CurrentBlock, 0) * 100).append(" %") );
+      ui->label_2->setText("Min: ");
       ui->label_3->setText("Max: ");
     } else {
       ui->label->setText("Min: ");
-      ui->label_lcolat->setText( QString::number(getViewCollateral(CurrentBlock, 0)).append(" FTXO") );
-      ui->label_2->setText("Medium: ");
-      ui->label_3->setText("Max: ");
+      ui->label_lcolat->setText( " OFF" );
+      ui->label_mn1_percent->setText( " " );
+      ui->label_2->setText("Foundation: ");
+      ui->label_3->setText("Regular: ");
     }
       ui->label_mcolat->setText( QString::number(getViewCollateral(CurrentBlock, 1)).append(" FTXO") );
       ui->label_fcolat->setText( QString::number(getViewCollateral(CurrentBlock, 2)).append(" FTXO") );
       // ui->label_pcolat->setText("250000 FTXO");
+      ui->label_mn2_percent->setText( QString::number(GetViewMnPercent(CurrentBlock, 1) * 100).append(" %") );
+      ui->label_mn3_percent->setText( QString::number(GetViewMnPercent(CurrentBlock, 2) * 100).append(" %") );
   }
 
 }

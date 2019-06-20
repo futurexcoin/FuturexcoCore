@@ -3536,8 +3536,8 @@ https://www.transifex.com/futurexco-project/futurexco-project-translations</tran
         <translation>Você deve especificar uma masternodeprivkey na configuração. Favor verificar o manual para obter ajuda.</translation>
     </message>
     <message>
-        <source>(32322 could be used only on mainnet)</source>
-        <translation>(32322 could be used only on mainnet)</translation>
+        <source>(11222 could be used only on mainnet)</source>
+        <translation>(11222 could be used only on mainnet)</translation>
     </message>
     <message>
         <source>(default: %s)</source>
@@ -3548,8 +3548,8 @@ https://www.transifex.com/futurexco-project/futurexco-project-translations</tran
         <translation>(padrão: 1)</translation>
     </message>
     <message>
-        <source>(must be 32322 for mainnet)</source>
-        <translation>(deve ser 32322 para mainnet)</translation>
+        <source>(must be 11222 for mainnet)</source>
+        <translation>(deve ser 11222 para mainnet)</translation>
     </message>
     <message>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>

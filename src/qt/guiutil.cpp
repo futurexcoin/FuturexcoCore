@@ -111,7 +111,7 @@ void setupAddressWidget(QValidatedLineEdit* widget, QWidget* parent)
 #if QT_VERSION >= 0x040700
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a FTXO address (e.g. %1)").arg("eSBxEjGXmJxwpXxXAJqeXztdUR4MsZZJsE"));
+    widget->setPlaceholderText(QObject::tr("Enter a FTXO address (e.g. %1)").arg("FnP83sKxi2yoSUsjMj7xrNsMdLJGnLsinp"));
 #endif
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
@@ -814,7 +814,7 @@ bool isExternal(QString theme)
     if (theme.isEmpty())
         return false;
 
-    if (theme.operator==("default") || theme.operator==("dark"))
+    if (theme.operator==("default"))
         return false;
 
 //    return (theme.operator!=("default"));
@@ -823,14 +823,7 @@ bool isExternal(QString theme)
 
 QString getThemeImage(QString image)
 {
-    QSettings settings;
-    QString theme = settings.value("theme", "").toString();
-
-    if (theme.operator==("dark")) {
-        return image.insert(image.lastIndexOf(QString("/")), QString("_dark"));
-    } else {
-        return image;
-    }
+    return image;
 }
 
 // Open CSS when configured

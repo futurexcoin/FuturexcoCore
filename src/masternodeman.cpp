@@ -834,7 +834,7 @@ std::vector<pair<int, CMasternode> > CMasternodeMan::GetMasternodeRanks(int64_t 
         if (mn.protocolVersion < minProtocol) continue;
 
         if (!mn.IsEnabled()) {
-            vecMasternodeScores.push_back(make_pair(32322, mn));
+            vecMasternodeScores.push_back(make_pair(11222, mn));
             continue;
         }
 

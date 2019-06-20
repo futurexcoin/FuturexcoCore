@@ -1740,10 +1740,10 @@ CAmount GetBlockValue(int nHeight)
         nSubsidy = 1000 * COIN;
     } else {
         if ( nHeight == 0 ) {
-            nSubsidy = 400000 * COIN; // premine
-        } else if (nHeight < 8000) {
+            nSubsidy = 400000 * COIN; // premine 400000
+        } else if (nHeight < Params().LAST_POW_BLOCK()) {
             nSubsidy = 0.1 * COIN;
-        } else if (nHeight >= 8000 && nHeight < 30000) {
+        } else if (nHeight >= Params().LAST_POW_BLOCK() && nHeight < 30000) {
             nSubsidy = 2 * COIN;
         } else if (nHeight >= 30000 && nHeight < 70000) {
             nSubsidy = 4 * COIN;
@@ -1781,7 +1781,7 @@ int64_t GetMasternodePayment(int nHeight, unsigned mnlevel, int64_t blockValue)
     if (nHeight < Params().StartMNPaymentsBlock())
         return 0;
 
-    if (nHeight >= Params().StartMNPaymentsBlock() && nHeight < 70000) { // 70000
+    if (nHeight >= Params().StartMNPaymentsBlock() && nHeight < 70000) {
         switch(mnlevel) {
             case 1: return blockValue * 0.10;
             case 2: return blockValue * 0.25;
@@ -1793,7 +1793,7 @@ int64_t GetMasternodePayment(int nHeight, unsigned mnlevel, int64_t blockValue)
             case 2: return blockValue * 0.25;
             case 3: return blockValue * 0.55;
         }
-    } else if (nHeight >= 200000) {
+  } else if (nHeight >= 200000) {
         switch(mnlevel) {
             // case 1: return blockValue * 0.0; // turned off
             case 2: return blockValue * 0.10;
@@ -1994,7 +1994,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState& state, const CCoinsVi
 
             // If prev is coinbase, check that it's matured
             if (coins->IsCoinBase() || coins->IsCoinStake()) {
-                if (nSpendHeight - coins->nHeight < Params().COINBASE_MATURITY())
+                if (nSpendHeight - coins->nHeight < Dynamic_coinbase_maturity(coins->nHeight))
                     return state.Invalid(
                         error("CheckInputs() : tried to spend coinbase at depth %d, coinstake=%d", nSpendHeight - coins->nHeight, coins->IsCoinStake()),
                         REJECT_INVALID, "bad-txns-premature-spend-of-coinbase");

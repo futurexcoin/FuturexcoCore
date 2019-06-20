@@ -54,13 +54,13 @@ static void convertSeed6(std::vector<CAddress>& vSeedsOut, const SeedSpec6* data
 // + Contains no strange transactions
 static Checkpoints::MapCheckpoints mapCheckpoints =
     boost::assign::map_list_of
-        (0, uint256("0000048cbf09cbd057b9414c20988af04598c352c3fd67aedddfe44b4db6edd1"))
+        (0, uint256("000006d87183b32e222782a1c9a7f6f271fd44382c954654ad8e0a09bcd274f3"))
 
     ;
 
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1557343379, // * UNIX timestamp of last checkpoint block
+    1560958000, // * UNIX timestamp of last checkpoint block
     0,          // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     4000        // * estimated number of transactions per day after checkpoint
@@ -84,32 +84,32 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-        pchMessageStart[0] = 0x65;
-        pchMessageStart[1] = 0x42;
-        pchMessageStart[2] = 0x65;
-        pchMessageStart[3] = 0x74;
+        pchMessageStart[0] = 0x06;
+        pchMessageStart[1] = 0xb8;
+        pchMessageStart[2] = 0x6d;
+        pchMessageStart[3] = 0x7b;
 
-        nDefaultPort = 32322;
+        nDefaultPort = 11222;
         bnProofOfWorkLimit = ~uint256(0) >> 20;
-        bnStartWork = ~uint256(0) >> 10; // 10 was 24
+        bnStartWork = ~uint256(0) >> 24;
 
         nMaxReorganizationDepth = 100;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
-        nTargetSpacing = 1 * 60;  // 2 minute
-        nTargetSpacingSlowLaunch = 1 * 90; // before block 100
-        nMaturity = 10;
+        nTargetSpacing = 1 * 60;  // 1 minute
+        nTargetSpacingSlowLaunch = 4 * 60; // 4 * 60 pow period
+        // nMaturity = 10;
         nMasternodeCountDrift = 3;
-        nMaxMoneyOut = 25481245  * COIN;
-        nStartMasternodePaymentsBlock = 100;
+        nMaxMoneyOut = 210000000  * COIN;
+        nStartMasternodePaymentsBlock = 250;
 
         /** Height or Time Based Activations **/
-        nLastPOWBlock = 200;
+        nLastPOWBlock = 8000;
         nModifierUpdateBlock = std::numeric_limits<decltype(nModifierUpdateBlock)>::max();
 
-        const char* pszTimestamp = " -= e-Sport Betting Coin =- v.2 - 2018 ";
+        const char* pszTimestamp = "The legend of FTXO start from here 2019";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -121,23 +121,23 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1557343379; // 2018-11-06T00:00:00+00:00
+        genesis.nTime = 1560958000;
         genesis.nBits = 0x1e0ffff0; // 504365040
-        genesis.nNonce = 224657;
-
+        genesis.nNonce = 772558;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(genesis.hashMerkleRoot == uint256("fcc12a94c92842e683fda1f5ca1b9abd12d689cfa18612d9b7c572e26e3b1b80"));
-        assert(hashGenesisBlock == uint256("0000048cbf09cbd057b9414c20988af04598c352c3fd67aedddfe44b4db6edd1"));
+        assert(genesis.hashMerkleRoot == uint256("433e24d27c957d768cade0a0cfe3f25e8587a6b5d69a171b7dfda8759fefd671"));
+        assert(hashGenesisBlock == uint256("000006d87183b32e222782a1c9a7f6f271fd44382c954654ad8e0a09bcd274f3"));
 
-        //vSeeds.clear();
-        // vSeeds.push_back(CDNSSeedData("", "173.212.215.88"));
-        // vSeeds.push_back(CDNSSeedData("", "173.249.9.72"));
-        // vSeeds.push_back(CDNSSeedData("", "173.249.9.73"));
+        vSeeds.clear();
+        vSeeds.push_back(CDNSSeedData("seed1", "seed1.futurexco.com"));
+        vSeeds.push_back(CDNSSeedData("seed2", "seed2.futurexco.com"));
+        vSeeds.push_back(CDNSSeedData("explorer", "chain.futurexco.com"));
+        vSeeds.push_back(CDNSSeedData("nsseeder", "seeder.futurexco.com"));
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 92); // e
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 63); // S
-        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 25); // B
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 36); // F
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 61); // R
+        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 95); // f
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x02)(0x2D)(0x25)(0x33).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x02)(0x21)(0x31)(0x2B).convert_to_container<std::vector<unsigned char> >();
         // BIP44 coin type is from https://github.com/satoshilabs/slips/blob/master/slip-0044.md 9984
@@ -156,9 +156,9 @@ public:
 
         nPoolMaxTransactions = 3;
 
-        vAlertPubKey = ParseHex("0428e89226dd86459df40d436a067c83749c78d653e22c556ae2d9b322296f3f1604e2f4789128386bc4acd6184c9a0062cf0cb98cf71cdbca1e808c25b7670367");
-        strSporkKey = "0416726a44c09752eddf582f08ad668bd49d563322a6ad746347eb6874bbfce2a6ce12c0f991fed88289d977395e1814a0cc1778f24ee2eeaa68d58183f3bd6195";
-        strObfuscationPoolDummyAddress = "eHP7weAZMjVcqU2Rb8QJDJTmMmYnWQNce1";
+        vAlertPubKey = ParseHex("03d436eb15dd731872b5d98777638d8cd9ccf1aaa2e2fd7c4a6c304465dce52070");
+        strSporkKey = "0381e053ce5a880f33bdb8fc2353c5835c279d91011e04d94c2bf10e72e1a6810a";
+        strObfuscationPoolDummyAddress = "FnP83sKxi2yoSUsjMj7xrNsMdLJGnLsinp";
 
     }
 
@@ -179,22 +179,22 @@ public:
     {
         networkID = CBaseChainParams::TESTNET;
         strNetworkID = "test";
-        pchMessageStart[0] = 0x47;
-        pchMessageStart[1] = 0x77;
-        pchMessageStart[2] = 0x66;
-        pchMessageStart[3] = 0xbb;
+        pchMessageStart[0] = 0x6d;
+        pchMessageStart[1] = 0x7b;
+        pchMessageStart[2] = 0x06;
+        pchMessageStart[3] = 0xb8;
 
         bnProofOfWorkLimit = ~uint256(0) >> 1;
         bnStartWork = bnProofOfWorkLimit;
 
-        nDefaultPort = 42322;
+        nDefaultPort = 11111;
         nEnforceBlockUpgradeMajority = 51;
         nRejectBlockOutdatedMajority = 75;
         nToCheckBlockUpgradeMajority = 100;
         nMinerThreads = 0;
-        nTargetSpacing = 1 * 60;  // 1 minute
+        nTargetSpacing = 1 * 45;  // 45 sec
         nLastPOWBlock = std::numeric_limits<decltype(nLastPOWBlock)>::max();
-        nMaturity = 15;
+        // nMaturity = 5;
         nMasternodeCountDrift = 4;
         nModifierUpdateBlock = std::numeric_limits<decltype(nModifierUpdateBlock)>::max();
         nMaxMoneyOut = 1000000000 * COIN;
@@ -205,14 +205,14 @@ public:
 
         hashGenesisBlock = genesis.GetHash();
 
-        assert(hashGenesisBlock == uint256("019a701040d795514ea77eda681e74f8de73afdb1b39d541fc0c697585b878dc"));
+        //assert(hashGenesisBlock == uint256("019a701040d795514ea77eda681e74f8de73afdb1b39d541fc0c697585b878dc"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 137); // Testnet futurexco addresses start with 'x'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet futurexco script addresses start with '8' or '9'
-        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 239);     // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 95); // F
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 61); // R
+        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 36); // f
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x3a)(0x80)(0x61)(0xa0).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x3a)(0x80)(0x58)(0x37).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_COIN_TYPE] = boost::assign::list_of(0x80)(0x00)(0x00)(0x01).convert_to_container<std::vector<unsigned char> >();

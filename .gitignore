@@ -10,6 +10,11 @@ reset-files.bash
 
 *.tar.gz
 multi-compile.sh
+dist/
+dpi36.background.tiff
+dpi72.background.tiff
+mreleases/
+
 *.exe
 src/futurexco
 src/futurexcod

@@ -213,17 +213,23 @@ void MasternodeList::StartAll(std::string strCommand)
     updateMyNodeList(true);
 }
 string getMnName(int level){
-  if (chainActive.Height() >= 200000) {
+  if (chainActive.Height() < 70000) {
     switch (level) {
-      case 1: return "OFF";
-      case 2: return "Foundation";
+      case 1: return "Min";
+      case 2: return "Med";
+      case 3: return "Max";
+    }
+  } else if (chainActive.Height() >= 70000 && chainActive.Height() < 200000) {
+    switch (level) {
+      case 1: return "Foundation";
+      case 2: return "Min";
       case 3: return "Max";
     }
   } else {
     switch (level) {
-      case 1: return "Min";
-      case 2: return "Medium";
-      case 3: return "Max";
+      case 1: return "OFF";
+      case 2: return "Foundation";
+      case 3: return "Regular";
     }
   }
 }

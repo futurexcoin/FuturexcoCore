@@ -45,7 +45,7 @@ using namespace boost;
 #define SPORK_1_SWIFTTX_DEFAULT 978307200                                       //2001-1-1
 #define SPORK_2_SWIFTTX_BLOCK_FILTERING_DEFAULT 1424217600                      //2015-2-18
 #define SPORK_3_MAX_VALUE_DEFAULT 1000
-#define SPORK_4_MASTERNODE_PAYMENT_ENFORCEMENT_DEFAULT 1561218390               // (GMT): Saturday, June 22, 2019 3:46:30 PM
+#define SPORK_4_MASTERNODE_PAYMENT_ENFORCEMENT_DEFAULT 1561749065               // (GMT): Friday, 28 June 2019 19:11:05
 #define SPORK_5_RECONSIDER_BLOCKS_DEFAULT 0
 #define SPORK_6_MN_WINNER_MINIMUM_AGE_DEFAULT 8000                              // Age in seconds. This should be > MASTERNODE_REMOVAL_SECONDS to avoid
                                                                                 // misconfigured new nodes in the list.

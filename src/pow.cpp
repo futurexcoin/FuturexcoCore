@@ -31,7 +31,8 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast)
     uint256 PastDifficultyAveragePrev;
 
     if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin||
-        (pindexLast->nHeight >= Params().LAST_POW_BLOCK() && pindexLast->nHeight <= Params().LAST_POW_BLOCK() + 5)) { // resetting difficulty for 5 blocks for pos to start
+        (pindexLast->nHeight >= Params().LAST_POW_BLOCK() && pindexLast->nHeight <= Params().LAST_POW_BLOCK() + 5) // // resetting difficulty for 5 blocks for pos to start
+         || (pindexLast->nHeight >= 2000 && pindexLast->nHeight < Params().LAST_POW_BLOCK()) && pindexLast->nHeight % 100 == 0 ) { // reseting every 100 blocks between 1.8k and 8k
         return Params().StartWork().GetCompact();
     }
 
@@ -93,8 +94,11 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast)
     uint256 bnNew(PastDifficultyAverage);
     int64_t _nTargetTimespan;
     //int64_t _nTargetTimespan = CountBlocks * (pindexLast->nHeight > Params().LAST_POW_BLOCK() ? Params().TargetSpacing() : Params().TargetSpacingSlowLaunch());
-    if (pindexLast->nHeight <= Params().LAST_POW_BLOCK() ) { // changing block time
+    if (pindexLast->nHeight <= 2000 ) { // changing block time
       _nTargetTimespan = CountBlocks * Params().TargetSpacingSlowLaunch(); // 4 min
+
+    } else if (pindexLast->nHeight > 2000 && pindexLast->nHeight <= Params().LAST_POW_BLOCK()) { // aka from 2k to 8k
+      _nTargetTimespan = CountBlocks * (3 * 60); // 3 min
 
     } else {
       _nTargetTimespan = CountBlocks * Params().TargetSpacing(); // 1 min
